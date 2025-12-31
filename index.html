@@ -1,0 +1,240 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Baby 💕</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Georgia',serif;
+  background:linear-gradient(135deg,#ffd1dc,#fceef5);
+  overflow-x:hidden;
+  text-align:center;
+  color:#4a2c2a;
+}
+
+/* Floating hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:18px;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-100vh);opacity:0}
+}
+
+/* Container */
+.container{
+  padding:70px 20px;
+  animation:fadeIn 2s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.95)}
+  to{opacity:1;transform:scale(1)}
+}
+
+h1{font-size:42px;margin-bottom:10px}
+h2{font-size:20px;color:#7a4b4b;font-weight:400}
+
+/* Card */
+.card{
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(10px);
+  border-radius:30px;
+  padding:40px;
+  max-width:560px;
+  margin:40px auto;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+/* Typed text */
+#text{
+  font-size:18px;
+  line-height:1.9;
+  min-height:220px;
+}
+
+/* Cursor */
+.cursor{
+  display:inline-block;
+  width:2px;
+  height:20px;
+  background:#b85c5c;
+  animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* Heart beat */
+.big-heart{
+  font-size:48px;
+  margin:20px 0;
+  animation:beat 1.4s infinite;
+}
+@keyframes beat{
+  0%{transform:scale(1)}
+  30%{transform:scale(1.3)}
+  60%{transform:scale(1)}
+}
+
+/* Cake */
+.cake{
+  font-size:70px;
+  cursor:pointer;
+  margin:20px 0;
+}
+.candles.off{
+  opacity:0;
+  transition:.6s;
+}
+
+/* Buttons */
+button,.music{
+  background:#ff7aa2;
+  color:#fff;
+  border:none;
+  padding:14px 30px;
+  font-size:16px;
+  border-radius:30px;
+  cursor:pointer;
+  margin:10px;
+  transition:.3s;
+}
+button:hover,.music:hover{transform:scale(1.1)}
+
+/* Kiss / Hug animation */
+.kiss{
+  position:fixed;
+  font-size:28px;
+  animation:kissFly 2s ease forwards;
+}
+@keyframes kissFly{
+  from{transform:translateY(0) scale(1);opacity:1}
+  to{transform:translateY(-200px) scale(1.8);opacity:0}
+}
+
+/* Footer */
+footer{
+  margin-top:40px;
+  font-size:15px;
+  color:#6b4a4a;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 LOCAL MUSIC -->
+<audio id="bgSong" loop preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+  <h1>Happy Birthday, Baby 🎂</h1>
+  <h2>My heart’s favorite person 💖</h2>
+
+  <div class="card">
+    <div id="text"></div><span class="cursor"></span>
+
+    <div class="big-heart">❤️</div>
+
+    <!-- 🎂 Candle Blow -->
+    <div class="cake" onclick="blowCandles()">
+      🎂<span class="candles" id="candles">🕯️🕯️🕯️</span>
+    </div>
+    <small>Tap the cake & make a wish ✨</small>
+
+    <!-- 🎵 Music -->
+    <div class="music" onclick="toggleMusic()" id="musicBtn">
+      ▶️ Play Our Song
+    </div>
+
+    <!-- 💋🤗 Kiss Hug -->
+    <button onclick="kissHug()">💋🤗 Kiss & Hug</button>
+  </div>
+
+  <footer>
+    Forever yours,<br><strong>Abhishek</strong>
+  </footer>
+</div>
+
+<script>
+/* Typing text */
+const lines=[
+ "My dearest Baby,",
+ "",
+ "Today isn’t just your birthday —",
+ "it’s the day the world became more beautiful.",
+ "",
+ "You are my happiness, my peace,",
+ "my forever and my everything.",
+ "",
+ "Happy Birthday, my love 💕"
+];
+let i=0,j=0,el=document.getElementById("text");
+function type(){
+ if(i<lines.length){
+  if(j<lines[i].length){
+   el.innerHTML+=lines[i][j++];setTimeout(type,45);
+  }else{
+   el.innerHTML+="<br><br>";j=0;i++;setTimeout(type,500);
+  }
+ }
+}
+type();
+
+/* Music */
+const song=document.getElementById("bgSong");
+const btn=document.getElementById("musicBtn");
+let playing=false;
+document.body.addEventListener("click",()=>{if(!playing)startMusic()},{once:true});
+function toggleMusic(){playing?pause():startMusic()}
+function startMusic(){
+ song.volume=0;song.play();fadeIn();
+ btn.innerText="⏸ Pause Song";playing=true;
+}
+function pause(){
+ song.pause();btn.innerText="▶️ Play Our Song";playing=false;
+}
+function fadeIn(){
+ let v=0;const f=setInterval(()=>{
+  if(v<0.4){v+=0.02;song.volume=v}else clearInterval(f);
+ },120);
+}
+
+/* Floating hearts */
+function heart(){
+ const h=document.createElement("div");
+ h.className="heart";h.innerHTML="❤️";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDuration=(Math.random()*3+4)+"s";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+}
+setInterval(heart,350);
+
+/* 🎂 Blow candles */
+function blowCandles(){
+ document.getElementById("candles").classList.add("off");
+ setTimeout(()=>alert("✨ Wish made! I’ll make all your dreams come true 💖"),600);
+}
+
+/* 💋🤗 Kiss & Hug */
+function kissHug(){
+ for(let i=0;i<10;i++){
+  const k=document.createElement("div");
+  k.className="kiss";
+  k.innerHTML=Math.random()>0.5?"💋":"🤗";
+  k.style.left=Math.random()*100+"vw";
+  k.style.bottom="100px";
+  document.body.appendChild(k);
+  setTimeout(()=>k.remove(),2000);
+ }
+}
+</script>
+
+</body>
+</html>
